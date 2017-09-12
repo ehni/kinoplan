@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     console.log("Today:\t" + todayFormatted);
 
-    $.getJSON("https://whateverorigin.org/get?url=" +
+    $.getJSON("http://whateverorigin.org/get?url=" +
         encodeURIComponent("http://www.citydome-sinsheim.com/programm") + "&callback=?",
         function (data) {
             //console.log("> ", data);
