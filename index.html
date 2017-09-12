@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Citydome Filmplan</title>
+
+    <!-- Bootstrap & BootstrapTable CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container-fluid main-content mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <div class="text-center">
+                    <h1>
+                        Citydome Filmplan für den
+                        <script>
+                            document.write(new Date().getDate() + "." + (new Date().getMonth() + 1) + "." + new Date().getFullYear())
+                        </script>
+                    </h1>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="container-fluid">
+                    <div class="loading-container" id="loading-container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="text-center">
+                                    <div class="loader"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="text-center">
+                                    <div id="loading-text"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container animate-bottom" id="table-container">
+                        <table id="table" data-toggle="table" data-sort-name="showingTimeStart" data-sort-order="asc">
+                            <thead>
+                                <th data-field="showingTimeStart" data-sortable="true">Beginn</th>
+                                <th data-field="showingTimeEndEST" data-sortable="true">Ende</th>
+                                <th data-field="showingRoom" data-sortable="true">Kino</th>
+                                <th data-field="title" data-sortable="true">Name</th>
+                                <th data-field="fsk" data-sortable="true">FSK</th>
+                                <th data-field="effects" data-sortable="true">3D</th>
+                                <th data-field="playtime" data-sortable="true">Laufzeit</th>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="text-center">
+                    © Robert Ehni
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!-- JQuery & Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/locale/bootstrap-table-de-DE.min.js"></script>
+
+<!-- Custom JS-->
+<script src="js/main.js"></script>
+
+</html>
