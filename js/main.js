@@ -46,7 +46,11 @@ $(document).ready(function () {
                         $.each(datesToday, function (index, showing) {
                             var showingRoom = showing.saal_bezeichnung;
                             var showingTimeStart = showing.zeit;
-                            var showingTimeEndEST = showing.zeit;
+                            var tmp = new Date();
+                            tmp.setHours(showing.zeit.substr(0,2));
+                            tmp.setMinutes(showing.zeit.substr(3,5));
+                            tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
+                            var showingTimeEndEST = ("0" + tmp.getHours()).slice(-2) + ":" + ("0" + tmp.getMinutes()).slice(-2);
 
                             var showingListItem = {
                                 "title": title,
