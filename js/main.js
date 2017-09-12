@@ -1,6 +1,13 @@
-$(document).ready(function () {
+var loadingMessages = [
+    "Fülle Popcorn nach...",
+    "Öffne Kinosaal...",
+    "Schreibe Spielplan...",
+    "Starte Rakete zum Mond...",
+    "Rette die Welt..."
+]
 
-    $("#loading-text").text("Lade Daten...");
+$(document).ready(function () {
+    $("#loading-text").text(loadingMessages[Math.floor(Math.random()*loadingMessages.length)]);
 
     var date = new Date();
     var todayFormatted = "datum_" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
@@ -15,8 +22,6 @@ $(document).ready(function () {
         encodeURIComponent("http://www.citydome-sinsheim.com/programm") + "&callback=?",
         function (data) {
             //console.log("> ", data);
-
-            $("#loading-text").text("Suche aktuelle Filme...");
 
             var result = extractJSON(data.contents);
 
@@ -78,7 +83,6 @@ $(document).ready(function () {
             movieList.sort(SortByShowingRoom);
             movieList.sort(SortByShowingTimeStart);
 
-            $("#loading-text").text("Fülle tabelle...");                
             $("#loading-container").hide();
             $("#table-container").show();
 
@@ -99,7 +103,6 @@ $(document).ready(function () {
                 })
             })
         });
-
 })
 
 function extractJSON(str) {
