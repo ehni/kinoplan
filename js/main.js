@@ -20,12 +20,7 @@ $(document).ready(function () {
 
             var result = extractJSON(data.contents);
 
-            //console.log(result);
-
             var movies = result[0].filme;
-
-            //console.log(movies);
-            //console.log($.type(movies));
 
             $.each(movies, function (index, movie) {
                 var filmfacts = movie.filmfakten;
