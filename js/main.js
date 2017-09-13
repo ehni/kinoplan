@@ -116,29 +116,10 @@ function setRandomLoadingMessage() {
     $("#loading-text").text(loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
 }
 
-$(document).on("click", "#sortTableByShowingRoomShowingTime", function (e) {
-    e.preventDefault();
-    console.log("[INFO] Sortiere Liste nach Spielraum -> Filmstart");
-    $("#sortTableByShowingRoomShowingTime").addClass("active");
-    $("#sortTableByShowingTimeShowingRoom").removeClass("active");
-    setRandomLoadingMessage()
-    movieList.sort(sortByShowingRoomShowingTimeStart);
-    fillTableWithMovieList();
-
-})
-
-$(document).on("click", "#sortTableByShowingTimeShowingRoom", function (e) {
-    e.preventDefault();
-    console.log("[INFO] Sortiere Liste nach Filmstart -> Spielraum");
-    $("#sortTableByShowingTimeShowingRoom").addClass("active");
-    $("#sortTableByShowingRoomShowingTime").removeClass("active");
-    movieList.sort(sortByShowingTimeStartShowingRoom);
-    fillTableWithMovieList();
-})
-
 function fillTableWithMovieList() {
     var table = $("#table");
-    table.bootstrapTable("removeAll");
+    table.bootstrapTable("destroy");
+    table.bootstrapTable();
     var i = 0;
     movieList.forEach(function (movie) {
         table.bootstrapTable("insertRow", {
@@ -172,20 +153,6 @@ function sortByShowingRoomShowingTimeStart(a, b) {
     }
     else {
         return (aShowingTimeStart < bShowingTimeStart) ? -1 : 1;
-    }
-}
-
-function sortByShowingTimeStartShowingRoom(a, b) {
-    var aRoom = a.showingRoom.slice(-1);
-    var bRoom = b.showingRoom.slice(-1);
-    var aShowingTimeStart = a.showingTimeStart;
-    var bShowingTimeStart = b.showingTimeStart;
-
-    if (aRoom == bRoom) {
-        return (aShowingTimeStart < bShowingTimeStart) ? -1 : (aShowingTimeStart > bShowingTimeStart) ? 1 : 0;
-    }
-    else {
-        return (aRoom < bRoom) ? -1 : 1;
     }
 }
 
