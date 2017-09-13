@@ -1,4 +1,4 @@
-@media (max-width: 978px) {
+@media (max-width: 900px) {
     .container {
       padding:0;
       margin:0;
@@ -6,6 +6,18 @@
 
     body {
       padding:0;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {   
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 576px) {
+    .container {
+        max-width: 100%;
     }
 }
 
@@ -18,8 +30,8 @@ h1 {
 }
 
 .table-container {
-    padding-top: calc(2vh);
-    padding-bottom: calc(2vh);
+    padding-top: 2vh;
+    padding-bottom: 2vh;
     display: none;
 }
 
@@ -42,19 +54,19 @@ h1 {
 }
 
 .box-padding {
-    padding: calc(2.5vh);
+    padding: 1.5vh;
 }
 
 #footer {
-    padding-bottom: 5px;
+    padding-bottom: 2.5vh;
 }
 
 .loading-container {
-    padding-top: 10px;
+    padding-top: 2.5vh;
 }
 
 #loading-text{
-    padding: calc(2vh);
+    padding: 2vh;
 }
 
 .animate-bottom {
