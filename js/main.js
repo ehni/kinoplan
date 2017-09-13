@@ -9,13 +9,14 @@ var loadingMessages = [
 // TODO Add correct sort order and multiple sort options (showingRoom/time and vice versa)
 
 $(document).ready(function () {
+    console.log("[INFO] Script geladen")
     $("#loading-text").text(loadingMessages[Math.floor(Math.random()*loadingMessages.length)]);
 
     var date = new Date();
     var todayFormatted = "datum_" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
     var movieList = new Array();
 
-    console.log("Today:\t" + todayFormatted);
+    console.log("[INFO] Today:\t" + todayFormatted);
 
     var httpsUrl = "https://whateverorigin.herokuapp.com/get?url=";
     var httpUrl = "http://whateverorigin.org/get?url=";
@@ -23,11 +24,15 @@ $(document).ready(function () {
     $.getJSON(httpsUrl +
         encodeURIComponent("http://www.citydome-sinsheim.com/programm") + "&callback=?",
         function (data) {
-            //console.log("> ", data);
+            console.log("[INFO] Kinoplan erhalten");
 
             var result = extractJSON(data.contents);
 
+            console.log("[INFO] JSON extrahiert")
+
             var movies = result[0].filme;
+
+            var tmp = new Date();            
 
             $.each(movies, function (index, movie) {
                 var filmfacts = movie.filmfakten;
@@ -48,7 +53,6 @@ $(document).ready(function () {
                         $.each(datesToday, function (index, showing) {
                             var showingRoom = showing.saal_bezeichnung;
                             var showingTimeStart = showing.zeit;
-                            var tmp = new Date();
                             tmp.setHours(showing.zeit.substr(0,2));
                             tmp.setMinutes(showing.zeit.substr(3,5));
                             tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
@@ -70,7 +74,10 @@ $(document).ready(function () {
                     if ($.type(datesToday) == "object") {
                         var showingRoom = datesToday.saal_bezeichnung;
                         var showingTimeStart = datesToday.zeit;
-                        var showingTimeEndEST = datesToday.zeit;
+                        tmp.setHours(datesToday.zeit.substr(0,2));
+                        tmp.setMinutes(datesToday.zeit.substr(3,5));
+                        tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
+                        var showingTimeEndEST = ("0" + tmp.getHours()).slice(-2) + ":" + ("0" + tmp.getMinutes()).slice(-2);
 
                         var showingListItem = {
                             "title": title,
@@ -86,9 +93,13 @@ $(document).ready(function () {
                 }
             })
 
+            console.log("[INFO] Aktuellen Plan heraus gesucht")
+
             movieList.sort(SortByShowingRoom);
             movieList.sort(SortByShowingTimeStart);
 
+            console.log("[INFO] Aktuellen Plan sortiert")
+            
             $("#loading-container").hide();
             $("#table-container").show();
 
@@ -108,6 +119,8 @@ $(document).ready(function () {
                     }
                 })
             })
+
+            console.log("[INFO] Daten ausgegeben")
         });
 })
 
@@ -116,7 +129,7 @@ function extractJSON(str) {
     firstOpen = str.indexOf('{', firstOpen + 1);
     do {
         firstClose = str.lastIndexOf('}');
-        console.log('firstOpen: ' + firstOpen, 'firstClose: ' + firstClose);
+        //console.log('firstOpen: ' + firstOpen, 'firstClose: ' + firstClose);
         if (firstClose <= firstOpen) {
             return null;
         }
