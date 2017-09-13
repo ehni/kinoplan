@@ -48,6 +48,10 @@ $(document).ready(function () {
                     fsk = "Keine Altersbeschränkung";
                 }
 
+                if ($.type(fsk) == "object") {
+                    fsk = "Noch nicht bekannt";
+                }
+
                 if (datesToday) {
                     if ($.type(datesToday) == "array") {
                         $.each(datesToday, function (index, showing) {
