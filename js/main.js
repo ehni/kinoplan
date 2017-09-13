@@ -16,7 +16,9 @@ $(document).ready(function () {
     
     // Init tooltips
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: "hover"
+        })
     })
 
     setRandomLoadingMessage();
@@ -115,6 +117,7 @@ function setRandomLoadingMessage() {
 }
 
 $(document).on("click", "#sortTableByShowingRoomShowingTime", function (e) {
+    e.preventDefault();
     console.log("[INFO] Sortiere Liste nach Spielraum -> Filmstart");
     $("#sortTableByShowingRoomShowingTime").addClass("active");
     $("#sortTableByShowingTimeShowingRoom").removeClass("active");
@@ -125,6 +128,7 @@ $(document).on("click", "#sortTableByShowingRoomShowingTime", function (e) {
 })
 
 $(document).on("click", "#sortTableByShowingTimeShowingRoom", function (e) {
+    e.preventDefault();
     console.log("[INFO] Sortiere Liste nach Filmstart -> Spielraum");
     $("#sortTableByShowingTimeShowingRoom").addClass("active");
     $("#sortTableByShowingRoomShowingTime").removeClass("active");
