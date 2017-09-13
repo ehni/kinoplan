@@ -17,13 +17,6 @@ $(document).ready(function () {
     // Show loading message
     setRandomLoadingMessage();
 
-    // Init tooltips
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip({
-            trigger: "hover"
-        })
-    })
-
     // Init datepicker
     $(".datepicker").datepicker({
         format: "dd.mm.yyyy",
@@ -34,8 +27,13 @@ $(document).ready(function () {
         minViewMode: "days",
         todayBtn: "linked",
         todayHighlight: true
+    }).on("show", function (e) {
+        $(".datepicker-dropdown").tooltip({
+            trigger: "hover",
+            placement: "right",
+            title: "Wähle ein Datum aus um die Filme für diesen Tag anzuzeigen"
+        })
     });
-
 
     // Retreive date from the web
     $.getJSON(httpsUrl +
@@ -65,9 +63,13 @@ $(document).ready(function () {
  * movies according to the date
  */
 $("#datepicker").on("change", function (e) {
+
+    // Hide open tooltips
+    $(".tooltip").tooltip("hide");
+
     var inputDate = $("#datepicker").val();
 
-    var newDate = "datum_" + inputDate.substr(6,4) + "-" + inputDate.substr(3,2) + "-" + inputDate.substr(0,2);
+    var newDate = "datum_" + inputDate.substr(6, 4) + "-" + inputDate.substr(3, 2) + "-" + inputDate.substr(0, 2);
 
     if (newDate == currentDate) {
         return;
