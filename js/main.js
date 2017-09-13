@@ -220,6 +220,8 @@ function sortByShowingRoomShowingTimeStart(a, b) {
 
 /**
  * Finds json objects in the given string
+ * Stolen from https://stackoverflow.com/a/10574546/7
+ * Thank you ThiefMaster!
  * 
  * @param {*} str String to search in for json objects
  */
