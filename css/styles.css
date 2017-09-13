@@ -1,29 +1,9 @@
-@media all and (max-width: 1200px) { /* screen size until 500px */
-    body {
-        font-size: 1em; /* 0.8x default size */
-    }
-    .container-fluid {
-        padding: 0px !important;
-    }
-
-    .table-container {
-        padding-top: 0!important;
-        padding-bottom: 0 !important;
-    }
-}
-
-@media all and (max-width: 500px) { /* screen size until 500px */
-    table * {
-        font-size: 1em; /* 0.8x default size */
-    }
-}
-
 body {
     background: #f5f5f5;
 }
 
 h1 {
-    font-size: 1.4em;
+    font-size: 1.5em;
 }
 
 .table-container {
@@ -32,12 +12,20 @@ h1 {
     display: none;
 }
 
+#table {
+    background-color: white;   
+}
+
 .card {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 .box-padding {
     padding: calc(2.5vh);
+}
+
+.loading-container {
+    padding-top: 10px;
 }
 
 #loading-text{
@@ -53,11 +41,11 @@ h1 {
 }
   
 @-webkit-keyframes animatebottom {
-    from { bottom:-100px; opacity:0 } 
+    from { bottom:-20px; opacity:0 } 
     to { bottom:0px; opacity:1 }
 }
   
 @keyframes animatebottom { 
-    from{ bottom:-100px; opacity:0 } 
+    from{ bottom:-20px; opacity:0 } 
     to{ bottom:0; opacity:1 }
 }
