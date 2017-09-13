@@ -6,7 +6,7 @@
     <meta name="description" content="Spielplan für den aktuellen Tag">
     <meta name="keywords" content="Citydome Sinsheim, Citydome, Sinsheim, Spielplan">
     <meta name="author" content="Robert Ehni">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
     <title>Citydome Filmplan</title>
 
@@ -22,75 +22,79 @@
 </head>
 
 <body>
-    <div class="container-fluid main-content box-padding mx-auto">
-        <div class="card">
-            <div class="card-header">
-                <div class="text-center">
-                    <h1>
-                        Citydome Filmplan
-                    </h1>
+    <div class="container flex-container">
+        <div class="container-fluid box-padding mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <div class="text-center">
+                        <h1>
+                            Citydome Filmplan
+                        </h1>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-content">
-        <div class="container-fluid box-padding mx-auto">
-            <form id="datepickerform">
-                <div class="input-group">
-                    <span class="input-group-addon">Datum</span>
-                    <input class="form-control datepicker" data-date-format="dd.mm.yyyy" id="datepicker">
-                </div>
-            </form>
-            <div class="loading-container" id="loading-container">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="text-center">
-                            <div class="sk-fading-circle">
-                                <div class="sk-circle1 sk-circle"></div>
-                                <div class="sk-circle2 sk-circle"></div>
-                                <div class="sk-circle3 sk-circle"></div>
-                                <div class="sk-circle4 sk-circle"></div>
-                                <div class="sk-circle5 sk-circle"></div>
-                                <div class="sk-circle6 sk-circle"></div>
-                                <div class="sk-circle7 sk-circle"></div>
-                                <div class="sk-circle8 sk-circle"></div>
-                                <div class="sk-circle9 sk-circle"></div>
-                                <div class="sk-circle10 sk-circle"></div>
-                                <div class="sk-circle11 sk-circle"></div>
-                                <div class="sk-circle12 sk-circle"></div>
+        <div class="card-content flex-fill-height">
+            <div class="container-fluid box-padding mx-auto">
+                <form id="datepickerform">
+                    <div class="input-group">
+                        <span class="input-group-addon">Datum</span>
+                        <input class="form-control datepicker" data-date-format="dd.mm.yyyy" id="datepicker">
+                    </div>
+                </form>
+                <div class="loading-container" id="loading-container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="text-center">
+                                <div class="sk-fading-circle">
+                                    <div class="sk-circle1 sk-circle"></div>
+                                    <div class="sk-circle2 sk-circle"></div>
+                                    <div class="sk-circle3 sk-circle"></div>
+                                    <div class="sk-circle4 sk-circle"></div>
+                                    <div class="sk-circle5 sk-circle"></div>
+                                    <div class="sk-circle6 sk-circle"></div>
+                                    <div class="sk-circle7 sk-circle"></div>
+                                    <div class="sk-circle8 sk-circle"></div>
+                                    <div class="sk-circle9 sk-circle"></div>
+                                    <div class="sk-circle10 sk-circle"></div>
+                                    <div class="sk-circle11 sk-circle"></div>
+                                    <div class="sk-circle12 sk-circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="text-center">
+                                <div id="loading-text"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="text-center">
-                            <div id="loading-text"></div>
-                        </div>
+                <div class="table-container animate-bottom" id="table-container">
+                    <div class="table-responsive">
+                        <table id="table" data-toggle="table" data-classes="table">
+                            <thead>
+                                <th data-field="showingTimeStart" data-sortable="true">Beginn</th>
+                                <th data-field="showingTimeEndEST" data-sortable="true">Ende</th>
+                                <th data-field="showingRoom" data-sortable="true">Kino</th>
+                                <th data-field="title" data-sortable="true">Name</th>
+                                <th data-field="fsk" data-sortable="true">FSK</th>
+                                <th data-field="effects" data-sortable="true">3D</th>
+                                <th data-field="playtime" data-sortable="true">Laufzeit</th>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="table-container animate-bottom" id="table-container">
-                <table id="table" data-toggle="table" data-classes="table">
-                    <thead>
-                        <th data-field="showingTimeStart" data-sortable="true">Beginn</th>
-                        <th data-field="showingTimeEndEST" data-sortable="true">Ende</th>
-                        <th data-field="showingRoom" data-sortable="true">Kino</th>
-                        <th data-field="title" data-sortable="true">Name</th>
-                        <th data-field="fsk" data-sortable="true">FSK</th>
-                        <th data-field="effects" data-sortable="true">3D</th>
-                        <th data-field="playtime" data-sortable="true">Laufzeit</th>
-                    </thead>
-                </table>
-            </div>
         </div>
-    </div>
-    <div class="card-footer">
-        <div class="text-center">
-            © Robert Ehni
-            <script>
-                document.write(new Date().getFullYear())
-            </script>
+        <div id="footer">
+            <div class="text-center">
+                © Robert Ehni
+                <script>
+                    document.write(new Date().getFullYear())
+                </script>
+            </div>
         </div>
     </div>
 </body>
