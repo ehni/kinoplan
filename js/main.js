@@ -1,3 +1,4 @@
+// Init variables
 var loadingMessages = [
     "Fülle Popcorn nach...",
     "Öffne Kinosaal...",
@@ -9,14 +10,11 @@ var movies = null;
 var movieList = new Array();
 var currentDate = null;
 var httpsUrl = "https://whateverorigin.herokuapp.com/get?url=";
-
 var date = new Date();
 var currentDate = "datum_" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
 
 $(document).ready(function () {
-    console.log("[INFO] Script geladen")
-    console.log("[INFO] Today:\t" + currentDate);
-
+    // Show loading message
     setRandomLoadingMessage();
 
     // Init tooltips
@@ -39,25 +37,33 @@ $(document).ready(function () {
     });
 
 
-
+    // Retreive date from the web
     $.getJSON(httpsUrl +
         encodeURIComponent("http://www.citydome-sinsheim.com/programm") + "&callback=?",
         function (data) {
-            console.log("[INFO] Kinoplan erhalten");
 
             var result = extractJSON(data.contents);
 
-            console.log("[INFO] JSON extrahiert")
-
             movies = result[0].filme;
 
-            // Set date
+            // Set date to today
             $(".datepicker").datepicker("update", currentDate);
-            getCurrentMovies();
+
+            // Init movie table for the first time. Because
+            // the current date is already set in the global currentDate
+            // variable the function won't get called
+            loadMovieList();
         });
 
 })
 
+/**
+ * Listener for the datepicker
+ * Gets called when the date is changed and checks
+ * if the new date is different from the current date.
+ * If so, the movie list will be reloaded to show the
+ * movies according to the date
+ */
 $("#datepicker").on("change", function (e) {
     var inputDate = $("#datepicker").val();
 
@@ -69,18 +75,27 @@ $("#datepicker").on("change", function (e) {
         currentDate = newDate;
     }
 
-    getCurrentMovies();
+    loadMovieList();
 })
 
-function getCurrentMovies() {
-    setRandomLoadingMessage();
+/**
+ * Load the movie list depending on the given date set
+ * in the currentDate variable
+ */
+function loadMovieList() {
 
+    // Load new loading message and show loading div
+    setRandomLoadingMessage();
     $("#loading-container").show();
     $("#table-container").hide();
 
     var tmp = new Date();
+
+    // Clear movie list before filling with new data
     movieList = new Array();
 
+    // Go through the movies data and search for movies
+    // for the given currentDate
     $.each(movies, function (index, movie) {
         var filmfacts = movie.filmfakten;
         var title = filmfacts.titel;
@@ -100,6 +115,8 @@ function getCurrentMovies() {
         }
 
         if (datesToday) {
+            // If there are multiple showings for the movie
+            // go through each showing
             if ($.type(datesToday) == "array") {
                 $.each(datesToday, function (index, showing) {
                     var showingRoom = showing.saal_bezeichnung;
@@ -122,6 +139,7 @@ function getCurrentMovies() {
                 })
             }
 
+            // In case of only one showing
             if ($.type(datesToday) == "object") {
                 var showingRoom = datesToday.saal_bezeichnung;
                 var showingTimeStart = datesToday.zeit;
@@ -144,17 +162,24 @@ function getCurrentMovies() {
         }
     })
 
-    console.log("[INFO] Aktuellen Plan heraus gesucht")
 
+    // Sort list
     movieList.sort(sortByShowingRoomShowingTimeStart);
 
     fillTableWithMovieList();
 }
 
+/**
+ * Display a random loading message from 
+ * the loadingMessages array
+ */
 function setRandomLoadingMessage() {
     $("#loading-text").text(loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
 }
 
+/**
+ * Go through the movie list and append each item to the table
+ */
 function fillTableWithMovieList() {
     var table = $("#table");
     table.bootstrapTable("destroy");
@@ -193,26 +218,26 @@ function sortByShowingRoomShowingTimeStart(a, b) {
     }
 }
 
+/**
+ * Finds json objects in the given string
+ * 
+ * @param {*} str String to search in for json objects
+ */
 function extractJSON(str) {
     var firstOpen, firstClose, candidate;
     firstOpen = str.indexOf('{', firstOpen + 1);
     do {
         firstClose = str.lastIndexOf('}');
-        //console.log('firstOpen: ' + firstOpen, 'firstClose: ' + firstClose);
         if (firstClose <= firstOpen) {
             return null;
         }
         do {
-            //console.log($.type(data));
             candidate = str.substring(firstOpen, firstClose + 1);
-            //console.log('candidate: ' + candidate);
             try {
                 var res = JSON.parse(candidate);
-                //console.log('...found');
                 return [res, firstOpen, firstClose + 1];
             }
             catch (e) {
-                //console.log('...failed');
             }
             firstClose = str.substr(0, firstClose).lastIndexOf('}');
         } while (firstClose > firstOpen);
