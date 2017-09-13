@@ -1,6 +1,6 @@
 @media all and (max-width: 1200px) { /* screen size until 500px */
     body {
-        font-size: 0.8em; /* 0.8x default size */
+        font-size: 1em; /* 0.8x default size */
     }
     .container-fluid {
         padding: 0px !important;
@@ -14,7 +14,7 @@
 
 @media all and (max-width: 500px) { /* screen size until 500px */
     table * {
-        font-size: 0.8em; /* 0.8x default size */
+        font-size: 1em; /* 0.8x default size */
     }
 }
 
@@ -36,9 +36,8 @@ h1 {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-.main-content {
+.box-padding {
     padding: calc(2.5vh);
-    width: 100%;
 }
 
 #loading-text{
