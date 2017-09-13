@@ -6,6 +6,8 @@ var loadingMessages = [
     "Rette die Welt..."
 ]
 
+// TODO Add correct sort order and multiple sort options (showingRoom/time and vice versa)
+
 $(document).ready(function () {
     $("#loading-text").text(loadingMessages[Math.floor(Math.random()*loadingMessages.length)]);
 
