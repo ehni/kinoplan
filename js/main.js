@@ -5,21 +5,23 @@ var loadingMessages = [
     "Starte Rakete zum Mond...",
     "Rette die Welt..."
 ]
+var movieList = new Array();
 
-// TODO Add correct sort order and multiple sort options (showingRoom/time and vice versa)
+var date = new Date();
+var todayFormatted = "datum_" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
 
 $(document).ready(function () {
     console.log("[INFO] Script geladen")
-    $("#loading-text").text(loadingMessages[Math.floor(Math.random()*loadingMessages.length)]);
-
-    var date = new Date();
-    var todayFormatted = "datum_" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
-    var movieList = new Array();
-
     console.log("[INFO] Today:\t" + todayFormatted);
+    
+    // Init tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    setRandomLoadingMessage();
 
     var httpsUrl = "https://whateverorigin.herokuapp.com/get?url=";
-    var httpUrl = "http://whateverorigin.org/get?url=";
 
     $.getJSON(httpsUrl +
         encodeURIComponent("http://www.citydome-sinsheim.com/programm") + "&callback=?",
@@ -32,7 +34,7 @@ $(document).ready(function () {
 
             var movies = result[0].filme;
 
-            var tmp = new Date();            
+            var tmp = new Date();
 
             $.each(movies, function (index, movie) {
                 var filmfacts = movie.filmfakten;
@@ -57,8 +59,8 @@ $(document).ready(function () {
                         $.each(datesToday, function (index, showing) {
                             var showingRoom = showing.saal_bezeichnung;
                             var showingTimeStart = showing.zeit;
-                            tmp.setHours(showing.zeit.substr(0,2));
-                            tmp.setMinutes(showing.zeit.substr(3,5));
+                            tmp.setHours(showing.zeit.substr(0, 2));
+                            tmp.setMinutes(showing.zeit.substr(3, 5));
                             tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
                             var showingTimeEndEST = ("0" + tmp.getHours()).slice(-2) + ":" + ("0" + tmp.getMinutes()).slice(-2);
 
@@ -78,8 +80,8 @@ $(document).ready(function () {
                     if ($.type(datesToday) == "object") {
                         var showingRoom = datesToday.saal_bezeichnung;
                         var showingTimeStart = datesToday.zeit;
-                        tmp.setHours(datesToday.zeit.substr(0,2));
-                        tmp.setMinutes(datesToday.zeit.substr(3,5));
+                        tmp.setHours(datesToday.zeit.substr(0, 2));
+                        tmp.setMinutes(datesToday.zeit.substr(3, 5));
                         tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
                         var showingTimeEndEST = ("0" + tmp.getHours()).slice(-2) + ":" + ("0" + tmp.getMinutes()).slice(-2);
 
@@ -99,34 +101,89 @@ $(document).ready(function () {
 
             console.log("[INFO] Aktuellen Plan heraus gesucht")
 
-            movieList.sort(SortByShowingRoom);
-            movieList.sort(SortByShowingTimeStart);
+            movieList.sort(sortByShowingRoomShowingTimeStart);
 
             console.log("[INFO] Aktuellen Plan sortiert")
-            
-            $("#loading-container").hide();
-            $("#table-container").show();
 
-            var i = 0;
-            movieList.forEach(function (movie) {
 
-                $("#table").bootstrapTable("insertRow", {
-                    index: i++,
-                    row: {
-                        title: movie.title,
-                        fsk: movie.fsk,
-                        effects: movie.effects,
-                        playtime: movie.playtime,
-                        showingRoom: movie.showingRoom,
-                        showingTimeStart: movie.showingTimeStart,
-                        showingTimeEndEST: movie.showingTimeEndEST
-                    }
-                })
-            })
-
-            console.log("[INFO] Daten ausgegeben")
+            fillTableWithMovieList();
         });
 })
+
+function setRandomLoadingMessage() {
+    $("#loading-text").text(loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
+}
+
+$(document).on("click", "#sortTableByShowingRoomShowingTime", function (e) {
+    console.log("[INFO] Sortiere Liste nach Spielraum -> Filmstart");
+    $("#sortTableByShowingRoomShowingTime").addClass("active");
+    $("#sortTableByShowingTimeShowingRoom").removeClass("active");
+    setRandomLoadingMessage()
+    movieList.sort(sortByShowingRoomShowingTimeStart);
+    fillTableWithMovieList();
+
+})
+
+$(document).on("click", "#sortTableByShowingTimeShowingRoom", function (e) {
+    console.log("[INFO] Sortiere Liste nach Filmstart -> Spielraum");
+    $("#sortTableByShowingTimeShowingRoom").addClass("active");
+    $("#sortTableByShowingRoomShowingTime").removeClass("active");
+    movieList.sort(sortByShowingTimeStartShowingRoom);
+    fillTableWithMovieList();
+})
+
+function fillTableWithMovieList() {
+    var table = $("#table");
+    table.bootstrapTable("removeAll");
+    var i = 0;
+    movieList.forEach(function (movie) {
+        table.bootstrapTable("insertRow", {
+            index: i++,
+            row: {
+                title: movie.title,
+                fsk: movie.fsk,
+                effects: movie.effects,
+                playtime: movie.playtime,
+                showingRoom: movie.showingRoom,
+                showingTimeStart: movie.showingTimeStart,
+                showingTimeEndEST: movie.showingTimeEndEST
+            }
+        })
+    })
+
+    $("#loading-container").hide();
+    $("#table-container").show();
+
+    console.log("[INFO] Tabelle aktualisiert")
+}
+
+function sortByShowingRoomShowingTimeStart(a, b) {
+    var aRoom = a.showingRoom.slice(-1);
+    var bRoom = b.showingRoom.slice(-1);
+    var aShowingTimeStart = a.showingTimeStart;
+    var bShowingTimeStart = b.showingTimeStart;
+
+    if (aShowingTimeStart == bShowingTimeStart) {
+        return (aRoom < bRoom) ? -1 : (aRoom > bRoom) ? 1 : 0;
+    }
+    else {
+        return (aShowingTimeStart < bShowingTimeStart) ? -1 : 1;
+    }
+}
+
+function sortByShowingTimeStartShowingRoom(a, b) {
+    var aRoom = a.showingRoom.slice(-1);
+    var bRoom = b.showingRoom.slice(-1);
+    var aShowingTimeStart = a.showingTimeStart;
+    var bShowingTimeStart = b.showingTimeStart;
+
+    if (aRoom == bRoom) {
+        return (aShowingTimeStart < bShowingTimeStart) ? -1 : (aShowingTimeStart > bShowingTimeStart) ? 1 : 0;
+    }
+    else {
+        return (aRoom < bRoom) ? -1 : 1;
+    }
+}
 
 function extractJSON(str) {
     var firstOpen, firstClose, candidate;
@@ -153,16 +210,4 @@ function extractJSON(str) {
         } while (firstClose > firstOpen);
         firstOpen = str.indexOf('{', firstOpen + 1);
     } while (firstOpen != -1);
-}
-
-function SortByShowingRoom(a, b) {
-    var aRoom = a.showingRoom.slice(-1);
-    var bRoom = b.showingRoom.slice(-1);
-    return ((aRoom < bRoom) ? -1 : ((aRoom > bRoom) ? 1 : 0));
-}
-
-function SortByShowingTimeStart(a, b) {
-    var aShowingTimeStart = a.showingTimeStart;
-    var bShowingTimeStart = b.showingTimeStart;
-    return ((aShowingTimeStart < bShowingTimeStart) ? -1 : ((aShowingTimeStart > bShowingTimeStart) ? 1 : 0));
 }
