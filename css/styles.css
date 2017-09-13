@@ -15,9 +15,9 @@
     padding-top: 10px;
 }
 
-/* .row {
-    text-align: center;
-} */
+.button-row {
+    padding-bottom: 20px;
+}
 
 .animate-bottom {
     position: relative;
