@@ -23,7 +23,11 @@
 
 @media only screen and (max-width: 800px) {
     .hide-on-mobile {
-        display: none;
+        /* display: none; */
+    }
+
+    .show-on-mobile {
+        /* display: none; */
     }
 }
  
@@ -33,7 +37,7 @@
     }
 
     .show-on-mobile {
-        display: block;
+        display: table-cell !important;
     }
 
     .fixed-table-container thead th .th-inner {
@@ -66,6 +70,10 @@ h1 {
 
 #table {
     background-color: white;   
+}
+
+.show-on-mobile {
+    display: none;
 }
 
 .flex-container {
