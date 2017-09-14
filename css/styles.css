@@ -75,6 +75,10 @@ h1 {
 
 }
 
+.no-href-focus:focus {
+    color: #000;
+}
+
 .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
