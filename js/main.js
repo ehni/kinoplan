@@ -8,7 +8,6 @@ var loadingMessages = [
 ]
 var movies = null;
 var movieList = new Array();
-var currentDate = null;
 var httpsUrl = "https://whateverorigin.herokuapp.com/get?url=";
 var date = new Date();
 var currentDate = "datum_" + date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
@@ -18,20 +17,26 @@ $(document).ready(function () {
     setRandomLoadingMessage();
 
     // Init datepicker
-    $(".datepicker").datepicker({
-        format: "dd.mm.yyyy",
-        autoclose: true,
-        disableTouchKeyboard: true,
-        language: "de",
-        maxViewMode: "days",
-        minViewMode: "days",
-        todayBtn: "linked",
-        todayHighlight: true
-    }).on("show", function (e) {
-        $(".datepicker-dropdown").tooltip({
+    $("#datetimepicker").datetimepicker({
+        format: "DD.MM.YYYY",
+        viewMode: "days",
+        showTodayButton: false,
+        icons: {
+            time: 'fa fa-clock-o',
+            date: 'fa fa-calendar',
+            up: 'fa fa-chevron-up',
+            down: 'fa fa-chevron-down',
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-calendar-times-o',
+            clear: 'fa fa-trash',
+            close: 'fa fa-times'
+        }
+    }).on("dp.show", function (e) {
+        $(".bootstrap-datetimepicker-widget").tooltip({
             trigger: "manual",
             placement: "top",
-            title: "Wähle ein Datum aus um die Filme für diesen Tag anzuzeigen"
+            title: "Wähle ein Datum aus um die Filme für diesen Tag anzuzeigen. Für ausgegraute Tage liegen keine Informationen vor."
         }).tooltip("show");
     });
 
@@ -45,12 +50,14 @@ $(document).ready(function () {
             movies = result[0].filme;
 
             // Set date to today
-            $(".datepicker").datepicker("update", currentDate);
+            $("#datetimepicker").datetimepicker("date", date);
 
             // Init movie table for the first time. Because
             // the current date is already set in the global currentDate
             // variable the function won't get called
             loadMovieList();
+
+            checkAvailableDates();
         });
 
 })
@@ -58,7 +65,7 @@ $(document).ready(function () {
 /**
  * Hide the tooltip for the datepicker when the datepicker is closed
  */
-$("#datepicker").on("hide", function(e) {
+$("#datetimepicker").on("dp.hide", function (e) {
     // Hide open tooltips
     $(".tooltip").tooltip("hide");
 });
@@ -70,9 +77,9 @@ $("#datepicker").on("hide", function(e) {
  * If so, the movie list will be reloaded to show the
  * movies according to the date
  */
-$("#datepicker").on("change", function (e) {
+$("#datetimepicker").on("dp.change", function (e) {
 
-    var inputDate = $("#datepicker").val();
+    var inputDate = $("#datetimepicker").val();
 
     var newDate = "datum_" + inputDate.substr(6, 4) + "-" + inputDate.substr(3, 2) + "-" + inputDate.substr(0, 2);
 
@@ -127,7 +134,7 @@ function loadMovieList() {
             fsk = "Noch nicht bekannt";
         }
 
-        var fskShort = fsk.substr(0,5);
+        var fskShort = fsk.substr(0, 5);
 
         if (datesToday) {
             // If there are multiple showings for the movie
@@ -143,7 +150,7 @@ function loadMovieList() {
                         tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
                         showingTimeEndEST = ("0" + tmp.getHours()).slice(-2) + ":" + ("0" + tmp.getMinutes()).slice(-2);
                     }
-                    
+
 
                     var showingListItem = {
                         "title": title,
@@ -193,6 +200,29 @@ function loadMovieList() {
 }
 
 /**
+ * Goes through all available data and finds the dates.
+ * Then sets only these dates available in the datetimepicker
+ */
+function checkAvailableDates() {
+    var dateList = new Array();
+
+    $.each(movies, function (index, movie) {
+        var dates = movie.vorstellungen.termine;
+        $.each(dates, function (index, dateItem) {
+            if ($.type(dateItem) == "object") {
+                dateList.push(new Date(dateItem.datum.substr(0,4) ,(dateItem.datum.substr(5, 2) - 1), dateItem.datum.substr(8,2)));
+            } else if ($.type(dateItem) == "array") {
+                $.each(dateItem, function (index, singleDateItem) {
+                    dateList.push(new Date(singleDateItem.datum.substr(0,4) ,(singleDateItem.datum.substr(5, 2) - 1), singleDateItem.datum.substr(8,2)));
+                })
+            }
+        })
+    })
+
+    $("#datetimepicker").datetimepicker("enabledDates", dateList);
+}
+
+/**
  * Display a random loading message from 
  * the loadingMessages array
  */
@@ -209,21 +239,6 @@ function fillTableWithMovieList() {
     table.bootstrapTable({
         data: movieList
     });
-    // var i = 0;
-    // movieList.forEach(function (movie) {
-    //     table.bootstrapTable("insertRow", {
-    //         index: i++,
-    //         row: {
-    //             title: movie.title,
-    //             fsk: movie.fsk,
-    //             effects: movie.effects,
-    //             playtime: movie.playtime,
-    //             showingRoom: movie.showingRoom,
-    //             showingTimeStart: movie.showingTimeStart,
-    //             showingTimeEndEST: movie.showingTimeEndEST
-    //         }
-    //     })
-    // })
 
     $("#loading-container").hide();
     $("#table-container").show();
