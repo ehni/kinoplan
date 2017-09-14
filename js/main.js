@@ -29,10 +29,10 @@ $(document).ready(function () {
         todayHighlight: true
     }).on("show", function (e) {
         $(".datepicker-dropdown").tooltip({
-            trigger: "hover",
-            placement: "right",
+            trigger: "manual",
+            placement: "top",
             title: "Wähle ein Datum aus um die Filme für diesen Tag anzuzeigen"
-        })
+        }).tooltip("show");
     });
 
     // Retreive date from the web
@@ -56,6 +56,14 @@ $(document).ready(function () {
 })
 
 /**
+ * Hide the tooltip for the datepicker when the datepicker is closed
+ */
+$("#datepicker").on("hide", function(e) {
+    // Hide open tooltips
+    $(".tooltip").tooltip("hide");
+});
+
+/**
  * Listener for the datepicker
  * Gets called when the date is changed and checks
  * if the new date is different from the current date.
@@ -63,9 +71,6 @@ $(document).ready(function () {
  * movies according to the date
  */
 $("#datepicker").on("change", function (e) {
-
-    // Hide open tooltips
-    $(".tooltip").tooltip("hide");
 
     var inputDate = $("#datepicker").val();
 
@@ -107,6 +112,12 @@ function loadMovieList() {
         var showings = movie.vorstellungen;
         var dates = showings.termine;
         var datesToday = dates[currentDate];
+        var showingTimeEndEST = null;
+
+        if ($.isEmptyObject(playtime)) {
+            playtime = "Noch nicht bekannt";
+            showingTimeEndEST = "Noch nicht bekannt";
+        }
 
         if (fsk == 0) {
             fsk = "Keine Altersbeschränkung";
@@ -123,10 +134,13 @@ function loadMovieList() {
                 $.each(datesToday, function (index, showing) {
                     var showingRoom = showing.saal_bezeichnung;
                     var showingTimeStart = showing.zeit;
-                    tmp.setHours(showing.zeit.substr(0, 2));
-                    tmp.setMinutes(showing.zeit.substr(3, 5));
-                    tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
-                    var showingTimeEndEST = ("0" + tmp.getHours()).slice(-2) + ":" + ("0" + tmp.getMinutes()).slice(-2);
+                    if (!showingTimeEndEST) {
+                        tmp.setHours(showing.zeit.substr(0, 2));
+                        tmp.setMinutes(showing.zeit.substr(3, 5));
+                        tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
+                        showingTimeEndEST = ("0" + tmp.getHours()).slice(-2) + ":" + ("0" + tmp.getMinutes()).slice(-2);
+                    }
+                    
 
                     var showingListItem = {
                         "title": title,
@@ -145,10 +159,12 @@ function loadMovieList() {
             if ($.type(datesToday) == "object") {
                 var showingRoom = datesToday.saal_bezeichnung;
                 var showingTimeStart = datesToday.zeit;
-                tmp.setHours(datesToday.zeit.substr(0, 2));
-                tmp.setMinutes(datesToday.zeit.substr(3, 5));
-                tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
-                var showingTimeEndEST = ("0" + tmp.getHours()).slice(-2) + ":" + ("0" + tmp.getMinutes()).slice(-2);
+                if (!showingTimeEndEST) {
+                    tmp.setHours(datesToday.zeit.substr(0, 2));
+                    tmp.setMinutes(datesToday.zeit.substr(3, 5));
+                    tmp.setMinutes(tmp.getMinutes() + parseInt(playtime));
+                    showingTimeEndEST = ("0" + tmp.getHours()).slice(-2) + ":" + ("0" + tmp.getMinutes()).slice(-2);
+                }
 
                 var showingListItem = {
                     "title": title,
