@@ -21,6 +21,31 @@
     }
 }
 
+@media only screen and (max-width: 800px) {
+    .hide-on-mobile {
+        display: none;
+    }
+}
+ 
+@media only screen and (max-width: 640px) {
+    .hide-on-mobile {
+        display: none;
+    }
+
+    .show-on-mobile {
+        display: block;
+    }
+
+    .fixed-table-container thead th .th-inner {
+        padding: 5px !important;
+    }
+
+    .fixed-table-container thead th .sortable {
+        padding-right: 5px !important;
+    }
+}
+
+
 body {
     background: #f5f5f5;
 }

@@ -127,6 +127,8 @@ function loadMovieList() {
             fsk = "Noch nicht bekannt";
         }
 
+        var fskShort = fsk.substr(0,5);
+
         if (datesToday) {
             // If there are multiple showings for the movie
             // go through each showing
@@ -146,6 +148,7 @@ function loadMovieList() {
                     var showingListItem = {
                         "title": title,
                         "fsk": fsk,
+                        "fskShort": fskShort,
                         "effects": effects,
                         "playtime": playtime,
                         "showingRoom": showingRoom,
@@ -170,6 +173,7 @@ function loadMovieList() {
                 var showingListItem = {
                     "title": title,
                     "fsk": fsk,
+                    "fskShort": fskShort,
                     "effects": effects,
                     "playtime": playtime,
                     "showingRoom": showingRoom,
@@ -202,22 +206,24 @@ function setRandomLoadingMessage() {
 function fillTableWithMovieList() {
     var table = $("#table");
     table.bootstrapTable("destroy");
-    table.bootstrapTable();
-    var i = 0;
-    movieList.forEach(function (movie) {
-        table.bootstrapTable("insertRow", {
-            index: i++,
-            row: {
-                title: movie.title,
-                fsk: movie.fsk,
-                effects: movie.effects,
-                playtime: movie.playtime,
-                showingRoom: movie.showingRoom,
-                showingTimeStart: movie.showingTimeStart,
-                showingTimeEndEST: movie.showingTimeEndEST
-            }
-        })
-    })
+    table.bootstrapTable({
+        data: movieList
+    });
+    // var i = 0;
+    // movieList.forEach(function (movie) {
+    //     table.bootstrapTable("insertRow", {
+    //         index: i++,
+    //         row: {
+    //             title: movie.title,
+    //             fsk: movie.fsk,
+    //             effects: movie.effects,
+    //             playtime: movie.playtime,
+    //             showingRoom: movie.showingRoom,
+    //             showingTimeStart: movie.showingTimeStart,
+    //             showingTimeEndEST: movie.showingTimeEndEST
+    //         }
+    //     })
+    // })
 
     $("#loading-container").hide();
     $("#table-container").show();
