@@ -15,6 +15,7 @@
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
@@ -24,15 +25,13 @@
 <body>
     <div class="container flex-container">
         <div class="container-fluid box-padding mx-auto">
-            <div class="card">
-                <div class="card-header">
+                <div class="card card-header">
                     <div class="text-center">
                         <h1>
                             Citydome Filmplan
                         </h1>
                     </div>
                 </div>
-            </div>
         </div>
         <div class="card-content flex-fill-height">
             <div class="container-fluid box-padding mx-auto">
@@ -40,6 +39,9 @@
                     <div class="input-group">
                         <span class="input-group-addon">Datum</span>
                         <input class="form-control datepicker" data-date-format="dd.mm.yyyy" id="datepicker">
+                        <label type="button" class="input-group-addon btn btn-default" onclick="loadMovieList()">
+                            <span class="fa fa-refresh"/>
+                        </label>
                     </div>
                 </form>
                 <div class="loading-container" id="loading-container">
