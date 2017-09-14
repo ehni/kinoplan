@@ -21,6 +21,8 @@ $(document).ready(function () {
         format: "DD.MM.YYYY",
         viewMode: "days",
         showTodayButton: false,
+        ignoreReadonly: true,
+        allowInputToggle: true,
         icons: {
             time: 'fa fa-clock-o',
             date: 'fa fa-calendar',
@@ -210,10 +212,10 @@ function checkAvailableDates() {
         var dates = movie.vorstellungen.termine;
         $.each(dates, function (index, dateItem) {
             if ($.type(dateItem) == "object") {
-                dateList.push(new Date(dateItem.datum.substr(0,4) ,(dateItem.datum.substr(5, 2) - 1), dateItem.datum.substr(8,2)));
+                dateList.push(new Date(dateItem.datum.substr(0, 4), (dateItem.datum.substr(5, 2) - 1), dateItem.datum.substr(8, 2)));
             } else if ($.type(dateItem) == "array") {
                 $.each(dateItem, function (index, singleDateItem) {
-                    dateList.push(new Date(singleDateItem.datum.substr(0,4) ,(singleDateItem.datum.substr(5, 2) - 1), singleDateItem.datum.substr(8,2)));
+                    dateList.push(new Date(singleDateItem.datum.substr(0, 4), (singleDateItem.datum.substr(5, 2) - 1), singleDateItem.datum.substr(8, 2)));
                 })
             }
         })
