@@ -69,6 +69,12 @@ h1 {
     padding: 2vh;
 }
 
+.no-outline-button, .no-outline-button:focus, .no-outline-button:active {
+    box-shadow: none !important;
+    outline: none !important;
+
+}
+
 .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
