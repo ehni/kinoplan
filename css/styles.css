@@ -43,6 +43,10 @@
     .fixed-table-container thead th .sortable {
         padding-right: 5px !important;
     }
+
+    .bootstrap-table .table:not(.table-condensed)>tbody>tr>td {
+        padding: 5px !important;
+    }
 }
 
 
