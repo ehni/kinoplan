@@ -132,6 +132,7 @@ function loadMovieList() {
             // go through each showing
             if ($.type(datesToday) == "array") {
                 $.each(datesToday, function (index, showing) {
+                    var showingTimeEndEST = showingTimeEndEST;
                     var showingRoom = showing.saal_bezeichnung;
                     var showingTimeStart = showing.zeit;
                     if (!showingTimeEndEST) {
