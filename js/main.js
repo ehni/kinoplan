@@ -20,7 +20,7 @@ $(document).ready(function () {
     $("#datetimepicker").datetimepicker({
         format: "DD.MM.YYYY",
         viewMode: "days",
-        showTodayButton: false,
+        showTodayButton: true,
         ignoreReadonly: true,
         allowInputToggle: true,
         icons: {
@@ -35,6 +35,8 @@ $(document).ready(function () {
             close: 'fa fa-times'
         }
     }).on("dp.show", function (e) {
+        $(".picker-switch a[data-action='today']").html("Heute").addClass("btn btn-secondary datetimepicker-today-button");
+        $(".picker-switch").attr("data-action", "");
         $(".bootstrap-datetimepicker-widget").tooltip({
             trigger: "manual",
             placement: "top",
@@ -80,6 +82,8 @@ $("#datetimepicker").on("dp.hide", function (e) {
  * movies according to the date
  */
 $("#datetimepicker").on("dp.change", function (e) {
+
+    $("#datetimepicker").datetimepicker("hide");
 
     var inputDate = $("#datetimepicker").val();
 
