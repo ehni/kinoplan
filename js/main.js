@@ -39,6 +39,7 @@ $(document).ready(function () {
         $(".picker-switch").attr("data-action", "");
         $(".bootstrap-datetimepicker-widget").tooltip({
             trigger: "manual",
+            animated: "fade",        
             placement: "top",
             title: "Wähle ein Datum aus um die Filme für diesen Tag anzuzeigen. Für ausgegraute Tage liegen keine Informationen vor."
         }).tooltip("show");
@@ -126,6 +127,15 @@ function loadMovieList() {
         var dates = showings.termine;
         var datesToday = dates[currentDate];
         var showingTimeEndEST = null;
+        var imgUrl = "https://www.cineprog.de/images/Breite_235px_RGB/";
+
+        if ($.type(filmfacts.plakat_ids) == "object") {
+            imgUrl = imgUrl.concat(filmfacts.plakat_ids.id);
+        } else if ($.type(filmfacts.plakat_ids) == "array") {
+            imgUrl = imgUrl.concat(filmfacts.plakat_ids[0].id);
+        } else {
+            imgUrl = null;
+        }
 
         if ($.isEmptyObject(playtime)) {
             playtime = "Noch nicht bekannt";
@@ -164,6 +174,7 @@ function loadMovieList() {
                         "fskShort": fskShort,
                         "effects": effects,
                         "playtime": playtime,
+                        "imgUrl": imgUrl,
                         "showingRoom": showingRoom,
                         "showingTimeStart": showingTimeStart,
                         "showingTimeEndEST": showingTimeEndEST
@@ -189,6 +200,7 @@ function loadMovieList() {
                     "fskShort": fskShort,
                     "effects": effects,
                     "playtime": playtime,
+                    "imgUrl": imgUrl,
                     "showingRoom": showingRoom,
                     "showingTimeStart": showingTimeStart,
                     "showingTimeEndEST": showingTimeEndEST
@@ -248,6 +260,10 @@ function fillTableWithMovieList() {
 
     $("#loading-container").hide();
     $("#table-container").show();
+    $(".table-cell-tooltip").tooltip({
+        animated: "fade",
+        html: true,
+    });
 }
 
 function sortByShowingRoomShowingTimeStart(a, b) {
@@ -291,4 +307,31 @@ function extractJSON(str) {
         } while (firstClose > firstOpen);
         firstOpen = str.indexOf('{', firstOpen + 1);
     } while (firstOpen != -1);
+}
+
+/**
+ * Cut long movie titles by "-"  or "und" or finally
+ * simply to max 12 chars
+ */
+function movieTitleFormatter (value, row) {
+    var shortTitle = row.title;
+    if (row.title.indexOf("-") > 0) {
+        shortTitle = row.title.split("-", 1)[0];
+    } else if (row.title.indexOf("und") > 0) {
+        shortTitle = row.title.split("und", 1)[0];
+    } else {
+        shortTitle =  row.title.substr(0,12);
+    }
+
+    var tooltipContent = row.title;
+
+    if (row.imgUrl) {
+        var tooltipContent = row.title.concat("<br>" + "<img class='tooltip-img' src='" + row.imgUrl + "'/>");        
+    }
+
+    return [
+        '<a class="table-cell-tooltip" data-original-title="' + row.title + '" data-toggle="tooltip" data-placement="bottom" data-container="body" title="' + tooltipContent + '">',
+        shortTitle,
+        '</a>'
+    ].join('');
 }
