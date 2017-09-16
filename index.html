@@ -40,7 +40,8 @@
                     <div class="input-group">
                         <span class="input-group-addon">Datum</span>
                         <input class="form-control datetimepicker" readonly="true" id="datetimepicker">
-                        <label href="#" role="button" class="input-group-addon btn btn-default active no-outline-button no-href-focus" aria-pressed="true" onclick="loadMovieList()">
+                        <label href="#" role="button" class="input-group-addon btn btn-default active no-outline-button no-href-focus" aria-pressed="true"
+                            onclick="loadMovieList()">
                             <span class="fa fa-refresh"/>
                         </label>
                     </div>
@@ -119,5 +120,21 @@
 
 <!-- Custom JS-->
 <script src="js/main.js"></script>
+
+<!-- Analytics -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="//analytics.spdns.de/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', '1']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+<!-- End Analytics -->
 
 </html>
