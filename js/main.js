@@ -125,6 +125,9 @@ function loadMovieList() {
         var fsk = filmfacts.fsk;
         var showings = movie.vorstellungen;
         var dates = showings.termine;
+        if (!dates) {
+            return;
+        }
         var datesToday = dates[currentDate];
         var showingTimeEndEST = null;
         var imgUrl = "https://www.cineprog.de/images/Breite_235px_RGB/";
